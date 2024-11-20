@@ -1,13 +1,22 @@
-import express, { Router } from 'express';
-import { infirmierList, addInfirmier, getInfirmierById, updateInfirmier, deleteInfirmier } from '../controllers/infirmierController.js';
+import express from 'express';
+import { 
+  infirmierList, 
+  addInfirmier, 
+  getInfirmierById, 
+  updateInfirmier, 
+  deleteInfirmier 
+} from '../controllers/infirmierController.js';
+import { validateInfirmier } from '../validations/infirmierValidation.js';
+import { verifierToken } from '../authentification/verifierToken.js';
+import autoriser from '../authentification/autoriser.js';
 
-const route = Router();
+const router = express.Router();
 
-// Définir les routes pour les infirmiers
-route.get('/', infirmierList); // Lister les infirmiers avec pagination
-route.post('/', addInfirmier); // Ajouter un infirmier
-route.get('/:id', getInfirmierById); // Obtenir un infirmier par ID
-route.put('/:id', updateInfirmier); // Mettre à jour un infirmier
-route.delete('/:id', deleteInfirmier); // Supprimer un infirmier
+// Routes sécurisées
+router.get('/', verifierToken, autoriser(['admin']), infirmierList);
+router.post('/', verifierToken, autoriser(['admin']), validateInfirmier, addInfirmier);
+router.get('/:id', verifierToken, autoriser(['admin']), getInfirmierById);
+router.put('/:id', verifierToken, autoriser(['admin']), validateInfirmier, updateInfirmier);
+router.delete('/:id', verifierToken, autoriser(['admin']), deleteInfirmier);
 
-export default route;
+export default router;

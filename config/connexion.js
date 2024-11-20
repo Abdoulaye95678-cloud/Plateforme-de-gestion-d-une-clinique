@@ -17,7 +17,7 @@ const {
 const connexion = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
   dialect: DB_DIALECT,
-  port: DB_PORT,
+  // port: DB_PORT,
   logging: console.log, // Affiche toutes les requêtes SQL pour le débogage
   define: {
     timestamps: true, // Active automatiquement `createdAt` et `updatedAt` pour tous les modèles

@@ -1,7 +1,9 @@
 import database from "../config/connexion.js";
 import { DataTypes } from "sequelize";
+import Patient from "./Patient.js";
+import Medcin from "./Medcin.js";
 
-const DossierMedical = database.define('DossierMedical', {
+const DossierMedical = database.define("DossierMedical", {
   id_dossier: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -11,21 +13,26 @@ const DossierMedical = database.define('DossierMedical', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Patients',
-      key: 'Id_patient',
+      model: Patient,
+      key: "Id_patient",
     },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   },
   id_medecin: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Medcins',
-      key: 'Id_medecin',
+      model: Medcin,
+      key: "id_medecin",
     },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   },
   date_creation: {
     type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: DataTypes.NOW,
   },
   symptomes: {
     type: DataTypes.TEXT,

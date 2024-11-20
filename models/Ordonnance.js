@@ -1,35 +1,43 @@
-import { DataTypes } from 'sequelize';
-import database from '../config/connexion.js';
+import database from "../config/connexion.js";
+import { DataTypes } from "sequelize";
+import Medcin from "./Medcin.js";
+import Patient from "./Patient.js";
 
-const Ordonnance = database.define('Ordonnance', {
-  Id_ordonnance: {
+const Ordonnance = database.define("Ordonnance", {
+  id_ordonnance: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
-  Date_emission: {
+  date_emission: {
     type: DataTypes.DATE,
-    allowNull: false
-  },
-  Notes: {
-    type: DataTypes.TEXT
-  },
-  Id_medecin: {
-    type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: 'Medcins', // Assurez-vous d'utiliser le nom correct du modèle
-      key: 'Id_medecin'
-    }
   },
-  Id_patient: {
+  notes: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  id_medecin: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
-      model: 'Patients', // Assurez-vous d'utiliser le nom correct du modèle
-      key: 'Id_patient'
-    }
-  }
+      model: Medcin,
+      key: "id_medecin",
+    },
+    onDelete: "SET NULL",
+    onUpdate: "CASCADE",
+  },
+  id_patient: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: Patient,
+      key: "Id_patient",
+    },
+    onDelete: "SET NULL",
+    onUpdate: "CASCADE",
+  },
 });
+
 
 export default Ordonnance;

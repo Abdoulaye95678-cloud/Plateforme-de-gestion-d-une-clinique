@@ -1,13 +1,20 @@
-import express, { Router } from 'express';
-import { ordonnanceList, addOrdonnance, getOrdonnanceById, updateOrdonnance, deleteOrdonnance } from '../controllers/ordonnanceController.js';
+import express from "express";
+import {
+  ordonnanceList,
+  addOrdonnance,
+  getOrdonnanceById,
+  updateOrdonnance,
+  deleteOrdonnance,
+} from "../controllers/ordonnanceController.js";
+import { verifierToken } from "../authentification/verifierToken.js";
+import autoriser from "../authentification/autoriser.js";
 
-const route = Router();
+const router = express.Router();
 
-// Définir les routes pour les ordonnances
-route.get('/', ordonnanceList); // Lister les ordonnances avec pagination
-route.post('/', addOrdonnance); // Ajouter une nouvelle ordonnance
-route.get('/:id', getOrdonnanceById); // Obtenir une ordonnance par ID
-route.put('/:id', updateOrdonnance); // Mettre à jour une ordonnance
-route.delete('/:id', deleteOrdonnance); // Supprimer une ordonnance
+router.get("/", verifierToken, autoriser(["admin", "medcin"]), ordonnanceList);
+router.post("/", verifierToken, autoriser(["admin", "medcin"]), addOrdonnance);
+router.get("/:id", verifierToken, autoriser(["admin", "medcin"]), getOrdonnanceById);
+router.put("/:id", verifierToken, autoriser(["admin", "medcin"]), updateOrdonnance);
+router.delete("/:id", verifierToken, autoriser(["admin", "medcin"]), deleteOrdonnance);
 
-export default route;
+export default router;

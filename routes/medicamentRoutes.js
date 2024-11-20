@@ -1,13 +1,21 @@
-import express, { Router } from 'express';
-import { medicamentList, addMedicament, getMedicamentById, updateMedicament, deleteMedicament } from '../controllers/medicamentController.js';
+import express from 'express';
+import {
+  medicamentList,
+  addMedicament,
+  getMedicamentById,
+  updateMedicament,
+  deleteMedicament,
+} from '../controllers/medicamentController.js';
+import { validateMedicament } from '../validations/medicamentValidation.js';
+import { verifierToken } from '../authentification/verifierToken.js';
+import autoriser from '../authentification/autoriser.js';
 
-const route = Router();
+const route = express.Router();
 
-// Définir les routes pour les médicaments
-route.get('/', medicamentList); // Lister les médicaments avec pagination
-route.post('/', addMedicament); // Ajouter un nouveau médicament
-route.get('/:id', getMedicamentById); // Obtenir un médicament par ID
-route.put('/:id', updateMedicament); // Mettre à jour un médicament
-route.delete('/:id', deleteMedicament); // Supprimer un médicament
+route.get('/', verifierToken, autoriser(['admin', 'medcin', 'infirmier']), medicamentList);
+route.post('/', verifierToken, autoriser(['admin', 'medcin']), validateMedicament, addMedicament);
+route.get('/:id', verifierToken, autoriser(['admin', 'medcin', 'infirmier']), getMedicamentById);
+route.put('/:id', verifierToken, autoriser(['admin', 'medcin']), validateMedicament, updateMedicament);
+route.delete('/:id', verifierToken, autoriser(['admin', 'medcin']), deleteMedicament);
 
 export default route;
