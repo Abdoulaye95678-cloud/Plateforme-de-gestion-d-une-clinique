@@ -10,7 +10,7 @@ import RendezVous from "./Rendez_vous.js";
 import { DataTypes } from "sequelize";
 import database from "../config/connexion.js";
 
-// Relations
+// Relations entre tous les modeles
 // Relation un-à-plusieurs entre Patient et Facture
 Patient.hasMany(Facture, { foreignKey: "Id_patient" });
 Facture.belongsTo(Patient, { foreignKey: "Id_patient" });

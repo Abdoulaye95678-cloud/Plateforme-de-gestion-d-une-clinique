@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import database from "../config/connexion.js";
-
+//table user pour lauthentification 
 const User = database.define("User", {
   id: {
     type: DataTypes.INTEGER,

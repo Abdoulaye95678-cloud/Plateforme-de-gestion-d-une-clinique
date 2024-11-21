@@ -1,6 +1,6 @@
 import database from "../config/connexion.js";
 import { DataTypes } from "sequelize";
-
+//table rendez vous avec les champs
 const RendezVous = database.define(
   "RendezVous",
   {
