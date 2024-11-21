@@ -1,7 +1,7 @@
 import DossierMedical from "../models/Dossier_Medical.js";
 import { validationResult } from "express-validator";
 
-// Lister les dossiers médicaux avec pagination
+// Permet de Lister les dossiers médicaux avec pagination
 export const dossierMedicalList = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const offset = (page - 1) * limit;
@@ -14,7 +14,7 @@ export const dossierMedicalList = async (req, res) => {
   }
 };
 
-// Ajouter un dossier médical
+//Permet  Ajouter un dossier médical
 export const addDossierMedical = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -29,7 +29,7 @@ export const addDossierMedical = async (req, res) => {
   }
 };
 
-// Obtenir un dossier médical par ID
+//Permet Obtenir un dossier médical par ID
 export const getDossierMedicalById = async (req, res) => {
   const { id } = req.params;
 
@@ -44,7 +44,7 @@ export const getDossierMedicalById = async (req, res) => {
   }
 };
 
-// Mettre à jour un dossier médical
+//Permet Mettre à jour un dossier médical
 export const updateDossierMedical = async (req, res) => {
   const { id } = req.params;
   const errors = validationResult(req);
@@ -65,7 +65,7 @@ export const updateDossierMedical = async (req, res) => {
   }
 };
 
-// Supprimer un dossier médical
+//Permet de Supprimer un dossier médical
 export const deleteDossierMedical = async (req, res) => {
   const { id } = req.params;
 
@@ -76,7 +76,7 @@ export const deleteDossierMedical = async (req, res) => {
     }
 
     await dossier.destroy();
-    res.status(200).json({ message: "Dossier médical supprimé avec succès." });
+    res.status(200).json({ message: "Dossier médical supprimé avec succès." });//  message pour supprimé un dossier medicalg
   } catch (error) {
     res.status(500).json({ message: "Erreur lors de la suppression du dossier médical.", error: error.message });
   }
