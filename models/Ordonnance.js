@@ -2,7 +2,7 @@ import database from "../config/connexion.js";
 import { DataTypes } from "sequelize";
 import Medcin from "./Medcin.js";
 import Patient from "./Patient.js";
-
+//table ordonnace avec les champs
 const Ordonnance = database.define("Ordonnance", {
   id_ordonnance: {
     type: DataTypes.INTEGER,

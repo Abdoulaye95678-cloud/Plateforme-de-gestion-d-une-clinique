@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import database from "../config/connexion.js";
 import Patient from "./Patient.js";
-
+//table facture avec les champs
 const Facture = database.define('Facture', {
   Id_facture: {
     type: DataTypes.INTEGER,

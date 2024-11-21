@@ -1,6 +1,6 @@
 import database from "../config/connexion.js";
 import { DataTypes } from "sequelize";
-
+//table patient avec les champs
 const Patient = database.define("Patient", {
   Id_patient: {
     type: DataTypes.INTEGER,
