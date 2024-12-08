@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import database from "../config/connexion.js";
-//table user pour lauthentification 
+
 const User = database.define("User", {
   id: {
     type: DataTypes.INTEGER,
@@ -19,6 +19,10 @@ const User = database.define("User", {
   role: {
     type: DataTypes.ENUM("admin", "medcin", "patient", "infirmier"),
     allowNull: false,
+  },
+  photo: {
+    type: DataTypes.STRING, // Stocker le chemin de la photo
+    allowNull: true,
   },
 });
 

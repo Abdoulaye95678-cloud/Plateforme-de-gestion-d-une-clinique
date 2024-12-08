@@ -1,13 +1,25 @@
 import Facture from "../models/Facture.js";
 import { validationResult } from "express-validator";
 
-// Lister les factures
+// Lister les factures avec pagination
 export const factureList = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query; // Valeurs par défaut
+  const offset = (page - 1) * limit;
+
   try {
-    const factures = await Facture.findAll();
-    res.status(200).json({ data: factures });
+    const factures = await Facture.findAndCountAll({
+      limit: parseInt(limit), // Limite de résultats par page
+      offset: parseInt(offset), // Décalage
+    });
+
+    res.status(200).json({
+      total: factures.count, // Total de factures
+      page: parseInt(page), // Page actuelle
+      pages: Math.ceil(factures.count / limit), // Nombre total de pages
+      data: factures.rows, // Données pour cette page
+    });
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de la récupération des factures.", error });
+    res.status(500).json({ message: "Erreur lors de la récupération des factures.", error: error.message });
   }
 };
 
@@ -22,7 +34,7 @@ export const addFacture = async (req, res) => {
     const facture = await Facture.create(req.body);
     res.status(201).json({ message: "Facture créée avec succès.", data: facture });
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de la création de la facture.", error });
+    res.status(500).json({ message: "Erreur lors de la création de la facture.", error: error.message });
   }
 };
 
@@ -36,7 +48,7 @@ export const getFactureById = async (req, res) => {
       res.status(404).json({ message: "Facture non trouvée." });
     }
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de la récupération de la facture.", error });
+    res.status(500).json({ message: "Erreur lors de la récupération de la facture.", error: error.message });
   }
 };
 
@@ -61,7 +73,6 @@ export const updateFacture = async (req, res) => {
   }
 };
 
-
 // Supprimer une facture
 export const deleteFacture = async (req, res) => {
   try {
@@ -73,6 +84,6 @@ export const deleteFacture = async (req, res) => {
       res.status(404).json({ message: "Facture non trouvée." });
     }
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de la suppression de la facture.", error });
+    res.status(500).json({ message: "Erreur lors de la suppression de la facture.", error: error.message });
   }
 };

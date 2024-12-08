@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -9,16 +9,15 @@ const {
   DB_USER,
   DB_PASSWORD,
   DB_HOST,
-  DB_DIALECT,
   DB_PORT,
 } = process.env;
 
-// Configuration de la connexion Sequelize avec des options supplémentaires
+// Configuration de la connexion Sequelize avec PostgreSQL
 const connexion = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
-  dialect: DB_DIALECT,
-  // port: DB_PORT,
-  logging: console.log, // Affiche toutes les requêtes SQL pour le débogage
+  dialect: "postgres", // PostgreSQL
+  port: DB_PORT || 5432, // Utiliser le port PostgreSQL par défaut si non défini
+  logging: console.log, // Affiche les requêtes SQL pour le débogage
   define: {
     timestamps: true, // Active automatiquement `createdAt` et `updatedAt` pour tous les modèles
     underscored: true, // Utilise le style snake_case pour les noms de colonnes et tables
@@ -35,9 +34,9 @@ const connexion = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
 const checkDatabaseConnection = async () => {
   try {
     await connexion.authenticate();
-    console.log('Connexion à la base de données réussie.');
+    console.log("Connexion à la base de données PostgreSQL réussie.");
   } catch (error) {
-    console.error('Impossible de se connecter à la base de données:', error);
+    console.error("Impossible de se connecter à PostgreSQL :", error);
   }
 };
 

@@ -1,6 +1,8 @@
-import database from "../config/connexion.js";
 import { DataTypes } from "sequelize";
-//table rendez vous avec les champs
+import database from "../config/connexion.js";
+import Patient from "./Patient.js";
+import Medcin from "./Medcin.js";
+
 const RendezVous = database.define(
   "RendezVous",
   {
@@ -28,16 +30,28 @@ const RendezVous = database.define(
     id_patient: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: "Patients", key: "Id_patient" },
+      references: {
+        model: Patient,
+        key: "id_patient",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
     },
     id_medecin: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: "Medcins", key: "Id_medecin" },
+      references: {
+        model: Medcin,
+        key: "id_medecin",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
     },
   },
   {
+    tableName: "rendez_vous",
     timestamps: false,
+    underscored: true,
   }
 );
 

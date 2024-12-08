@@ -10,40 +10,40 @@ import RendezVous from "./Rendez_vous.js";
 import { DataTypes } from "sequelize";
 import database from "../config/connexion.js";
 
-// Relations entre tous les modeles
+// Relations
 // Relation un-à-plusieurs entre Patient et Facture
-Patient.hasMany(Facture, { foreignKey: "Id_patient" });
-Facture.belongsTo(Patient, { foreignKey: "Id_patient" });
+Patient.hasMany(Facture, { foreignKey: "id_patient" });
+Facture.belongsTo(Patient, { foreignKey: "id_patient" });
 
-// Relation plusieurs-à-plusieurs entre Patient et Medcin via la table intermédiaire PatientMedcin
+// Relation plusieurs-à-plusieurs entre Patient et Medcin via une table intermédiaire
 const PatientMedcin = database.define("PatientMedcin", {}, { timestamps: false });
-Patient.belongsToMany(Medcin, { through: PatientMedcin, foreignKey: "Id_patient" });
-Medcin.belongsToMany(Patient, { through: PatientMedcin, foreignKey: "Id_medecin" });
+Patient.belongsToMany(Medcin, { through: PatientMedcin, foreignKey: "id_patient" });
+Medcin.belongsToMany(Patient, { through: PatientMedcin, foreignKey: "id_medecin" });
 
 // Relation un-à-plusieurs entre Medcin et RendezVous
-Medcin.hasMany(RendezVous, { foreignKey: "Id_medecin" });
-RendezVous.belongsTo(Medcin, { foreignKey: "Id_medecin" });
+Medcin.hasMany(RendezVous, { foreignKey: "id_medecin" });
+RendezVous.belongsTo(Medcin, { foreignKey: "id_medecin" });
 
 // Relation un-à-plusieurs entre Patient et RendezVous
-Patient.hasMany(RendezVous, { foreignKey: "Id_patient" });
-RendezVous.belongsTo(Patient, { foreignKey: "Id_patient" });
+Patient.hasMany(RendezVous, { foreignKey: "id_patient" });
+RendezVous.belongsTo(Patient, { foreignKey: "id_patient" });
 
 // Relation un-à-plusieurs entre Medcin et Ordonnance
-Medcin.hasMany(Ordonnance, { foreignKey: "Id_medecin" });
-Ordonnance.belongsTo(Medcin, { foreignKey: "Id_medecin" });
+Medcin.hasMany(Ordonnance, { foreignKey: "id_medecin" });
+Ordonnance.belongsTo(Medcin, { foreignKey: "id_medecin" });
 
 // Relation un-à-plusieurs entre Patient et Ordonnance
-Patient.hasMany(Ordonnance, { foreignKey: "Id_patient" });
-Ordonnance.belongsTo(Patient, { foreignKey: "Id_patient" });
+Patient.hasMany(Ordonnance, { foreignKey: "id_patient" });
+Ordonnance.belongsTo(Patient, { foreignKey: "id_patient" });
 
-// Relation plusieurs-à-plusieurs entre Ordonnance et Medicament via la table intermédiaire OrdonnanceMedicament
+// Relation plusieurs-à-plusieurs entre Ordonnance et Medicament
 const OrdonnanceMedicament = database.define(
   "OrdonnanceMedicament",
   {},
   { timestamps: false }
 );
-Ordonnance.belongsToMany(Medicament, { through: OrdonnanceMedicament, foreignKey: "Id_ordonnance" });
-Medicament.belongsToMany(Ordonnance, { through: OrdonnanceMedicament, foreignKey: "Id_medicament" });
+Ordonnance.belongsToMany(Medicament, { through: OrdonnanceMedicament, foreignKey: "id_ordonnance" });
+Medicament.belongsToMany(Ordonnance, { through: OrdonnanceMedicament, foreignKey: "id_medicament" });
 
 // Relation un-à-plusieurs entre Patient et DossierMedical
 Patient.hasMany(DossierMedical, { foreignKey: "id_patient" });
@@ -53,7 +53,7 @@ DossierMedical.belongsTo(Patient, { foreignKey: "id_patient" });
 Medcin.hasMany(DossierMedical, { foreignKey: "id_medecin" });
 DossierMedical.belongsTo(Medcin, { foreignKey: "id_medecin" });
 
-// Table d'association pour la relation plusieurs-à-plusieurs entre Infirmier et Patient
+// Table d'association entre Infirmier et Patient
 const SuiviPatient = database.define(
   "SuiviPatient",
   {
@@ -63,7 +63,7 @@ const SuiviPatient = database.define(
     },
     id_patient: {
       type: DataTypes.INTEGER,
-      references: { model: Patient, key: "Id_patient" },
+      references: { model: Patient, key: "id_patient" },
     },
   },
   { timestamps: false }
@@ -71,7 +71,7 @@ const SuiviPatient = database.define(
 Infirmier.belongsToMany(Patient, { through: SuiviPatient, foreignKey: "id_infirmier" });
 Patient.belongsToMany(Infirmier, { through: SuiviPatient, foreignKey: "id_patient" });
 
-// Table d'association pour la relation plusieurs-à-plusieurs entre Infirmier et RendezVous
+// Table d'association entre Infirmier et RendezVous
 const InfirmierRendezVous = database.define(
   "InfirmierRendezVous",
   {
@@ -81,7 +81,7 @@ const InfirmierRendezVous = database.define(
     },
     id_rendez_vous: {
       type: DataTypes.INTEGER,
-      references: { model: RendezVous, key: "Id_rendez_vous" },
+      references: { model: RendezVous, key: "id_rendez_vous" },
     },
   },
   { timestamps: false }

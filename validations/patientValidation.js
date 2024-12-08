@@ -1,25 +1,25 @@
 import { body } from "express-validator";
 
 export const validatePatient = [
-  body("Nom_patient")
-    .notEmpty().withMessage("Le champ 'Nom_patient' est requis.")
-    .isString().withMessage("Le champ 'Nom_patient' doit être une chaîne de caractères."),
-  body("Prenom_patient")
-    .notEmpty().withMessage("Le champ 'Prenom_patient' est requis.")
-    .isString().withMessage("Le champ 'Prenom_patient' doit être une chaîne de caractères."),
-  body("Date_naissance")
-    .notEmpty().withMessage("Le champ 'Date_naissance' est requis.")
-    .isISO8601().withMessage("Le champ 'Date_naissance' doit être une date valide."),
-  body("Adresse")
-    .notEmpty().withMessage("Le champ 'Adresse' est requis.")
-    .isString().withMessage("Le champ 'Adresse' doit être une chaîne de caractères."),
-  body("Num_tel")
-    .notEmpty().withMessage("Le champ 'Num_tel' est requis.")
-    .isString().withMessage("Le champ 'Num_tel' doit être une chaîne de caractères."),
-  body("Email")
-    .notEmpty().withMessage("Le champ 'Email' est requis.")
-    .isEmail().withMessage("Le champ 'Email' doit être une adresse email valide."),
-  body("Assurance_medical")
+  body("nom_patient")
+    .notEmpty().withMessage("Le champ 'nom_patient' est requis.")
+    .isString().withMessage("Le champ 'nom_patient' doit être une chaîne de caractères."),
+  body("prenom_patient")
+    .notEmpty().withMessage("Le champ 'prenom_patient' est requis.")
+    .isString().withMessage("Le champ 'prenom_patient' doit être une chaîne de caractères."),
+  body("date_naissance")
+    .notEmpty().withMessage("Le champ 'date_naissance' est requis.")
+    .isISO8601().withMessage("Le champ 'date_naissance' doit être une date valide."),
+  body("adresse")
+    .notEmpty().withMessage("Le champ 'adresse' est requis.")
+    .isString().withMessage("Le champ 'adresse' doit être une chaîne de caractères."),
+  body("num_tel")
+    .notEmpty().withMessage("Le champ 'num_tel' est requis.")
+    .isString().withMessage("Le champ 'num_tel' doit être une chaîne de caractères."),
+  body("email")
+    .notEmpty().withMessage("Le champ 'email' est requis.")
+    .isEmail().withMessage("Le champ 'email' doit être une adresse email valide."),
+  body("assurance_medical")
     .optional()
-    .isString().withMessage("Le champ 'Assurance_medical' doit être une chaîne de caractères."),
+    .isString().withMessage("Le champ 'assurance_medical' doit être une chaîne de caractères."),
 ];

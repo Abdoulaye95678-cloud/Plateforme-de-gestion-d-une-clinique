@@ -1,43 +1,50 @@
-import database from "../config/connexion.js";
 import { DataTypes } from "sequelize";
-import Medcin from "./Medcin.js";
+import database from "../config/connexion.js";
 import Patient from "./Patient.js";
-//table ordonnace avec les champs
-const Ordonnance = database.define("Ordonnance", {
-  id_ordonnance: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  date_emission: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-  notes: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  id_medecin: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: Medcin,
-      key: "id_medecin",
-    },
-    onDelete: "SET NULL",
-    onUpdate: "CASCADE",
-  },
-  id_patient: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: Patient,
-      key: "Id_patient",
-    },
-    onDelete: "SET NULL",
-    onUpdate: "CASCADE",
-  },
-});
+import Medcin from "./Medcin.js";
 
+const Ordonnance = database.define(
+  "Ordonnance",
+  {
+    id_ordonnance: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    date_emission: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    notes: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    id_patient: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Patient,
+        key: "id_patient",
+      },
+      onDelete: "SET NULL",
+      onUpdate: "CASCADE",
+    },
+    id_medecin: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Medcin,
+        key: "id_medecin",
+      },
+      onDelete: "SET NULL",
+      onUpdate: "CASCADE",
+    },
+  },
+  {
+    tableName: "ordonnances",
+    timestamps: true,
+    underscored: true,
+  }
+);
 
 export default Ordonnance;

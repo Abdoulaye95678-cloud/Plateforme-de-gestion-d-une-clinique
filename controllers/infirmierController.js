@@ -1,14 +1,26 @@
 import Infirmier from "../models/Infirmier.js"; // Importer le modèle Infirmier
 
-// Lister tous les infirmiers
+// Lister tous les infirmiers avec pagination
 export const infirmierList = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query; // Valeurs par défaut pour la pagination
+  const offset = (page - 1) * limit;
+
   try {
-    const infirmiers = await Infirmier.findAll(); // Récupérer tous les infirmiers
-    res.status(200).json(infirmiers); // Retourner les infirmiers avec un statut HTTP 200
+    const infirmiers = await Infirmier.findAndCountAll({
+      limit: parseInt(limit), // Limite des résultats par page
+      offset: parseInt(offset), // Décalage pour la page actuelle
+    });
+
+    res.status(200).json({
+      total: infirmiers.count, // Nombre total d'infirmiers
+      page: parseInt(page), // Page actuelle
+      pages: Math.ceil(infirmiers.count / limit), // Nombre total de pages
+      data: infirmiers.rows, // Infirmiers pour cette page
+    });
   } catch (error) {
     res.status(500).json({
       message: "Erreur lors de la récupération des infirmiers.", // Message en cas d'erreur
-      error,
+      error: error.message,
     });
   }
 };
@@ -21,7 +33,7 @@ export const addInfirmier = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       message: "Erreur lors de l'ajout de l'infirmier.", // Message en cas d'erreur
-      error,
+      error: error.message,
     });
   }
 };
@@ -39,7 +51,7 @@ export const getInfirmierById = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       message: "Erreur lors de la récupération de l'infirmier.", // Message en cas d'erreur
-      error,
+      error: error.message,
     });
   }
 };
@@ -61,7 +73,7 @@ export const updateInfirmier = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       message: "Erreur lors de la mise à jour de l'infirmier.", // Message en cas d'erreur
-      error,
+      error: error.message,
     });
   }
 };
@@ -80,7 +92,7 @@ export const deleteInfirmier = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       message: "Erreur lors de la suppression de l'infirmier.", // Message en cas d'erreur
-      error,
+      error: error.message,
     });
   }
 };

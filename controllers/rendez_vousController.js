@@ -7,13 +7,19 @@ export const rendezVousList = async (req, res) => {
   const offset = (page - 1) * limit;
 
   try {
-    const rendezVous = await RendezVous.findAll({
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+    const rendezVous = await RendezVous.findAndCountAll({
+      limit: parseInt(limit), // Nombre d'éléments par page
+      offset: parseInt(offset), // Décalage
     });
-    res.status(200).json({ data: rendezVous });
+
+    res.status(200).json({
+      total: rendezVous.count, // Nombre total de rendez-vous
+      page: parseInt(page), // Page actuelle
+      pages: Math.ceil(rendezVous.count / limit), // Nombre total de pages
+      data: rendezVous.rows, // Rendez-vous de la page actuelle
+    });
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de la récupération des rendez-vous", error: error.message });
+    res.status(500).json({ message: "Erreur lors de la récupération des rendez-vous.", error: error.message });
   }
 };
 
@@ -26,9 +32,9 @@ export const addRendezVous = async (req, res) => {
 
   try {
     const rendezVous = await RendezVous.create(req.body);
-    res.status(201).json({ message: "Rendez-vous créé avec succès", data: rendezVous });
+    res.status(201).json({ message: "Rendez-vous créé avec succès.", data: rendezVous });
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de la création du rendez-vous", error: error.message });
+    res.status(500).json({ message: "Erreur lors de la création du rendez-vous.", error: error.message });
   }
 };
 
@@ -38,12 +44,13 @@ export const getRendezVousById = async (req, res) => {
 
   try {
     const rendezVous = await RendezVous.findByPk(id);
-    if (!rendezVous) {
-      return res.status(404).json({ message: "Rendez-vous non trouvé" });
+    if (rendezVous) {
+      res.status(200).json({ data: rendezVous });
+    } else {
+      res.status(404).json({ message: "Rendez-vous non trouvé." });
     }
-    res.status(200).json({ data: rendezVous });
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de la récupération du rendez-vous", error: error.message });
+    res.status(500).json({ message: "Erreur lors de la récupération du rendez-vous.", error: error.message });
   }
 };
 
@@ -57,14 +64,14 @@ export const updateRendezVous = async (req, res) => {
 
   try {
     const rendezVous = await RendezVous.findByPk(id);
-    if (!rendezVous) {
-      return res.status(404).json({ message: "Rendez-vous non trouvé" });
+    if (rendezVous) {
+      await rendezVous.update(req.body);
+      res.status(200).json({ message: "Rendez-vous mis à jour avec succès.", data: rendezVous });
+    } else {
+      res.status(404).json({ message: "Rendez-vous non trouvé." });
     }
-
-    await rendezVous.update(req.body);
-    res.status(200).json({ message: "Rendez-vous mis à jour avec succès", data: rendezVous });
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de la mise à jour du rendez-vous", error: error.message });
+    res.status(500).json({ message: "Erreur lors de la mise à jour du rendez-vous.", error: error.message });
   }
 };
 
@@ -74,13 +81,13 @@ export const deleteRendezVous = async (req, res) => {
 
   try {
     const rendezVous = await RendezVous.findByPk(id);
-    if (!rendezVous) {
-      return res.status(404).json({ message: "Rendez-vous non trouvé" });
+    if (rendezVous) {
+      await rendezVous.destroy();
+      res.status(200).json({ message: "Rendez-vous supprimé avec succès." });
+    } else {
+      res.status(404).json({ message: "Rendez-vous non trouvé." });
     }
-
-    await rendezVous.destroy();
-    res.status(200).json({ message: "Rendez-vous supprimé avec succès" });
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de la suppression du rendez-vous", error: error.message });
+    res.status(500).json({ message: "Erreur lors de la suppression du rendez-vous.", error: error.message });
   }
 };

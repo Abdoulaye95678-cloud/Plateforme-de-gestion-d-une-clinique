@@ -1,57 +1,48 @@
-import database from "../config/connexion.js";
 import { DataTypes } from "sequelize";
-//table medcin avec les champs
-const Medcin = database.define("Medcin", {
-  id_medecin: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  nom_medecin: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: { msg: "Le nom est obligatoire." },
+import database from "../config/connexion.js";
+
+const Medcin = database.define(
+  "Medcin",
+  {
+    id_medecin: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    nom_medecin: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    prenom_medecin: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    specialisation: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    num_tel: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    salle_consultation: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
   },
-  prenom_medecin: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: { msg: "Le prénom est obligatoire." },
-    },
-  },
-  specialisation: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: { msg: "La spécialisation est obligatoire." },
-    },
-  },
-  num_tel: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: { msg: "Le numéro de téléphone est obligatoire." },
-    },
-  },
-  salle_consultation: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: { msg: "La salle de consultation est obligatoire." },
-    },
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: { msg: "L'email doit être valide." },
-    },
-  },
-}, {
-  timestamps: true, // Pour gérer les colonnes created_at et updated_at
-});
+  {
+    tableName: "medcins",
+    timestamps: true,
+    underscored: true,
+  }
+);
 
 export default Medcin;
